@@ -1,0 +1,1 @@
+exports.Canvas = require('./lib/canvas');
