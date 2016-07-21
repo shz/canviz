@@ -237,4 +237,34 @@ export default class Canvas {
   createImageData(imageDataOrSw: number | ImageData, sh?: number): ImageData { return this.ctx.createImageData(imageDataOrSw, sh); }
   getImageData(sx: number, sy: number, sw: number, sh: number): ImageData { return this.ctx.getImageData(sx, sy, sw, sh); }
   putImageData(imagedata: ImageData, dx: number, dy: number, dirtyX?: number, dirtyY?: number, dirtyWidth?: number, dirtyHeight?: number) { this.ctx.putImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight); }
+
+  // CanvasDrawingStyles
+  set lineWidth(v: number) { this.ctx.lineWidth = v; }
+  get lineWidth(): number { return this.ctx.lineWidth; }
+  set lineCap(v: string) { this.ctx.lineCap = v; }
+  get lineCap(): string { return this.ctx.lineCap; }
+  set lineJoin(v: string) { this.ctx.lineJoin = v; }
+  get lineJoin(): string { return this.ctx.lineJoin; }
+  set miterLimit(v: number) { this.ctx.miterLimit = v; }
+  get miterLimit(): number { return this.ctx.miterLimit; }
+  setLineDash(segments: number[]) { this.ctx.setLineDash(segments); }
+  getLineDash(): number[] { return this.ctx.getLineDash(); }
+  set lineDashOffset(v: number) { this.ctx.lineDashOffset = v; }
+  get lineDashOffset(): number { return this.ctx.lineDashOffset; }
+  set font(v: string) { this.ctx.font = v; }
+  get font(): string { return this.ctx.font; }
+  set textAlign(v: string) { this.ctx.textAlign = v; }
+  get textAlign(): string { return this.ctx.textAlign; }
+  set textBaseline(v: string) { this.ctx.textBaseline = v; }
+  get textBaseline(): string { return this.ctx.textBaseline; }
+
+  // CanvasPathMethods
+  closePath() { this.ctx.closePath(); }
+  moveTo(x: number, y: number) { this.ctx.moveTo(x, y); }
+  lineTo(x: number, y: number) { this.ctx.lineTo(x, y); }
+  quadraticCurveTo(cpx: number, cpy: number, x: number, y: number) { this.ctx.quadraticCurveTo(cpx, cpy, x, y); }
+  bezierCurveTo(cp1x: number, cp1y: number, cp2x: number, cp2y: number, x: number, y: number) { this.ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y); }
+  arcTo(x1: number, y1: number, x2: number, y2: number, radius: number) { this.ctx.arcTo(x1, y1, x2, y2, radius); }
+  rect(x: number, y: number, w: number, h: number) { this.ctx.rect(x, y, w, h); }
+  arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, counterClockwise: boolean = false) { this.ctx.arc(x, y, radius, startAngle, endAngle, counterClockwise); }
 }
