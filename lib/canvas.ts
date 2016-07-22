@@ -68,9 +68,11 @@ export default class Canvas {
       ctx.patternQuality = 'best';
       ctx.textDrawingMode = 'path';
       ctx.antialias = 'subpixel';
+
+      // These aren't
+      ctx.webkitImageSmoothingEnabled = true;
     }
-    this.ctx.webkitImageSmoothingEnabled = true;
-  }
+}
 
   /**
    * Sets the canvas size and scaling ratio
@@ -87,6 +89,11 @@ export default class Canvas {
 
     // Calculate our final ratio
     this._ratio = scaling * (typeof window === 'undefined' ? 1 : window.devicePixelRatio);
+
+    // Set the underlying height of the canvas using the proper ratio
+    // for the backing store.
+    this.el.height = height * this._ratio;
+    this.el.width = width * this._ratio;
 
     // Apply an initial scale to the canvas to account for the scale ratio
     this.ctx.scale(this._ratio, this._ratio);
