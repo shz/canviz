@@ -21,33 +21,25 @@ export default class AffineMatrix {
   /**
    * Creates a new AffineMatrix
    */
-  constructor(a?: number | number[] | any, b?: number, c?: number, d?: number, e?: number, f?: number) {
-    if (typeof a !== 'undefined') {
-      // Support cloning from another matrix/object
-      if (typeof a === 'object') {
-        f = a.f;
-        e = a.e;
-        d = a.d;
-        c = a.c;
-        b = a.b;
-        a = a.a; // Has to be last, for hopefully obvious reasons
-
-      // Array-like things work too
-      } else if (a.length) {
+  constructor(a: number | number[] | any = 1, b: number = 0,
+              c: number = 1, d: number = 0, e: number = 0, f: number = 0) {
+    // Support cloning from another matrix/object or an array
+    if (typeof a === 'object') {
+      if (a.length !== undefined) {
         f = a[5];
         e = a[4];
         d = a[3];
         c = a[2];
         b = a[1];
         a = a[0];
+      } else {
+        f = a.f;
+        e = a.e;
+        d = a.d;
+        c = a.c;
+        b = a.b;
+        a = a.a; // Has to be last, for hopefully obvious reasons
       }
-    } else {
-      a = 1;
-      b = 0;
-      c = 0;
-      d = 1;
-      e = 0;
-      f = 0;
     }
 
     this.a = a;

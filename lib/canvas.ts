@@ -56,7 +56,7 @@ export default class Canvas {
 
     // Basic setup
     this.el = element;
-    this.ctx = element.getContext('2d');
+    this.ctx = element.getContext('2d')!;
     this._saveCount = 0;
     this._ratio = 0;
     this._transform = new AffineMatrix();
