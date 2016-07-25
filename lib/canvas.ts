@@ -72,7 +72,14 @@ export default class Canvas {
       // These aren't
       ctx.webkitImageSmoothingEnabled = true;
     }
-}
+  }
+
+  /**
+   * This exists mostly for parity with the standard CanvasRenderingContext2D
+   */
+  get canvas(): HTMLCanvasElement {
+    return this.el;
+  }
 
   /**
    * Sets the canvas size and scaling ratio
@@ -201,7 +208,7 @@ export default class Canvas {
   get fillStyle(): string | CanvasGradient | CanvasPattern { return this.ctx.fillStyle; }
   createLinearGradient(x0: number, y0: number, x1: number, y1: number): CanvasGradient { return this.ctx.createLinearGradient(x0, y0, x1, y1); }
   createRadialGradient(x0: number, y0: number, r0: number, x1: number, y1: number, r1: number): CanvasGradient { return this.ctx.createRadialGradient(x0, y0, r0, x1, y1, r1); }
-  createPattern(image: CanvasImageSource, repetition?: string): CanvasPattern { return this.ctx.createPattern(image, repetition); }
+  createPattern(image: CanvasImageSource, repetition: string): CanvasPattern { return this.ctx.createPattern(image, repetition); }
 
   // Shadows
   set shadowOffsetX(v: number) { this.ctx.shadowOffsetX = v; }
