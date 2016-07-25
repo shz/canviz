@@ -1,8 +1,8 @@
 import Canvas from './canvas';
 
-type RenderFunction = (c: AnimatedCanvas) => void;
+export type RenderFunction = (c: AnimatedCanvas) => void;
 
-class RenderChain {
+export class RenderChain {
   group: string;
   canvas: AnimatedCanvas;
   active: boolean;

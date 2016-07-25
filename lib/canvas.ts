@@ -1,6 +1,6 @@
 import AffineMatrix from './affine_matrix';
 
-type CanvasImageSource = HTMLImageElement | HTMLVideoElement | HTMLCanvasElement;
+export type CanvasImageSource = HTMLImageElement | HTMLVideoElement | HTMLCanvasElement;
 
 /**
  * Cross-platform method to create a canvas

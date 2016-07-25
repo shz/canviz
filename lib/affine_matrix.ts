@@ -1,4 +1,4 @@
-interface IVector {
+export interface IVector {
   x: number;
   y: number;
 }

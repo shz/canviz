@@ -1,12 +1,15 @@
 {
-  "name": "uber-canvas",
+  "name": "canvas",
   "version": "1.0.0",
-  "description": "A better canvas",
-  "main": "index.js",
+  "description": "A better canvas, angled towards data visualization",
+  "main": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typings": "./node_modules/.bin/tsc --declaration",
+    "watch": "./node_modules/.bin/tsc -w"
   },
   "author": "Patrick Stein <lylepstein@gmail.com>",
+  "typings": "./index.d.ts",
   "license": "MIT",
   "devDependencies": {
     "react-dom": "^15.2.1",

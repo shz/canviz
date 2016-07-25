@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Canvas from './canvas';
+import AnimatedCanvas from './animated_canvas';
 
-interface ICanvasComponentProps {
+export interface ICanvasComponentProps {
   autoresize: boolean;
-  renderer: (c: Canvas) => void;
+  renderer: (c: AnimatedCanvas) => void;
 }
 
 export default class CanvasComponent extends React.Component<ICanvasComponentProps, void> {
-  canvas: Canvas;
+  canvas: AnimatedCanvas;
   eventHandlers: (() => void)[] = [];
 
   constructor(props: ICanvasComponentProps) {
@@ -24,7 +24,7 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
   // Canvas lifecycle
 
   initCanvas(holder: Element) {
-    this.canvas = new Canvas();
+    this.canvas = new AnimatedCanvas(this.props.renderer);
     holder.appendChild(this.canvas.el);
     this.sizeCanvas();
   }
@@ -41,8 +41,7 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
   }
 
   renderCanvas() {
-    this.canvas.clear();
-    this.props.renderer(this.canvas);
+    this.canvas.render();
   }
 
   // React lifecycle
