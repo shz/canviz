@@ -1,5 +1,5 @@
 {
-  "name": "canvas",
+  "name": "canviz",
   "version": "1.0.0",
   "description": "A better canvas, angled towards data visualization",
   "main": "./index.js",
