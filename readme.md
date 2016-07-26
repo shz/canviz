@@ -109,7 +109,20 @@ let regions = ac.intersectingRegions(50, 50); // ['a', 'b']
 onMouseMoveSomehow((x, y) => {
   ac.render(ac.intersectingRegions(x, y));
 });
+```
 
+##### React
+
+If you're using `<CanvasComponent>` you get a convenient event handler
+that will be called any time the mouse cursor moves within the canvas.
+The regions will have been calculated for you as well, and passed through
+to your handler, free of charge!
+
+```jsx
+function interactHandler(c, regions) {
+  // ...
+}
+<CanvasComponent onInteract={interactHandler} />
 ```
 
 ### Animation
