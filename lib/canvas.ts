@@ -1,4 +1,7 @@
 import AffineMatrix from './affine_matrix';
+import MockCanvas from './mock_canvas';
+
+declare var require: (mod: string) => any;
 
 export type CanvasImageSource = HTMLImageElement | HTMLVideoElement | HTMLCanvasElement;
 
@@ -6,8 +9,19 @@ export type CanvasImageSource = HTMLImageElement | HTMLVideoElement | HTMLCanvas
  * Cross-platform method to create a canvas
  */
 function createCanvas(): HTMLCanvasElement {
-  // TODO - Support node-canvas
-  return document.createElement('canvas');
+  // Browser support
+  if (typeof document !== 'undefined') {
+    return document.createElement('canvas');
+  } else {
+    // Attempt to use node-canvas
+    try {
+      let Canvas = require('canvas').Canvas;
+      return new Canvas();
+    // No node canvas?  No problem! Mock it up.
+    } catch (err) {
+      return new MockCanvas() as HTMLCanvasElement;
+    }
+  }
 }
 
 export default class Canvas {
@@ -88,6 +102,11 @@ export default class Canvas {
     this.width = width;
     this.height = height;
     this.scaling = scaling;
+
+    // Our Mock and node-canvas implementations might not have a .style
+    if (!this.el.style) {
+      (<any>this.el).style = {};
+    }
 
     // The element's CSS size doesn't need to worry about pixel ratios,
     // so we can just set it directly.
@@ -170,7 +189,11 @@ export default class Canvas {
   // These transform functions are delegated to the underlying CanvasRenderingContext2D,
   // but we also copy their actions to our stored transform matrix.
 
-  scale(x: number, y: number) {
+  scale(x: number, y?: number) {
+    if (y === undefined) {
+      y = x;
+    }
+
     this._transform = this._transform.scale(x, y);
     this.ctx.scale(x, y);
   }

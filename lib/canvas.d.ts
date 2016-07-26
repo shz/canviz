@@ -70,7 +70,7 @@ export default class Canvas {
      * Pop state from the state stack
      */
     restore(): void;
-    scale(x: number, y: number): void;
+    scale(x: number, y?: number): void;
     rotate(rad: number): void;
     translate(x: number, y: number): void;
     transform(a: number, b: number, c: number, d: number, e: number, f: number): void;

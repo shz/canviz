@@ -1,6 +1,15 @@
 import Canvas from './canvas';
 
+
 export type RenderFunction = (c: AnimatedCanvas) => void;
+
+export interface IRegion {
+  name: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
 
 export class RenderChain {
   group: string;
@@ -31,14 +40,22 @@ export default class AnimatedCanvas extends Canvas {
   rendering: boolean = false;
 
   /**
+   * A list of hit regions, stored in screen space coordinates
+   */
+  regions: IRegion[] = [];
+
+  /**
    * A list of active render groups
    */
   _renderGroups: string[] = [];
+
 
   constructor(renderer: RenderFunction, element?: HTMLCanvasElement) {
     super(element);
 
     this.renderer = renderer;
+
+    this.size(100, 100, 1);
   }
 
   render(groups: string[] = []) {
@@ -47,6 +64,9 @@ export default class AnimatedCanvas extends Canvas {
     }
     this.rendering = true;
     this._renderGroups = ['default'].concat(groups);
+    this.regions = [];
+
+    this.renderer(this);
 
     this._renderGroups = [];
     this.rendering = false;
@@ -60,5 +80,41 @@ export default class AnimatedCanvas extends Canvas {
     // Only return a valid render chain if this group is active in this
     // render call.
     return new RenderChain(this, name, this._renderGroups.indexOf(name) > -1);
+  }
+
+  /**
+   * Defines a region with a name, position, and size.  The canvas' current
+   * transform matrix is applied to these coordinates in order to properly
+   * map them to screen space.
+   */
+  region(name: string, x: number, y: number, w: number, h: number) {
+    let transform = this.currentTransform;
+
+    // We have to do start/end because the w/h could be *translated* by
+    // the transform matrix (as well as skewed, scaled, etc).  This
+    // means we won't get the absolute measurement back we're expecting,
+    // and the start/end approach lets us compensate for that.
+    let start = transform.multiplyVector(x, y);
+    let end = transform.multiplyVector(x + w, y + h);
+
+    this.regions.push({
+      name: name,
+      x: start.x,
+      y: start.y,
+      w: end.x - start.x,
+      h: end.y - start.y
+    });
+  }
+
+  /**
+   * Gets the names of all regions that intersect with the given coordinate
+   */
+  intersectingRegions(x: number, y: number): string[] {
+    return this.regions
+      .filter(r => (x >= r.x) &&
+                   (x <= r.x + r.w) &&
+                   (y >= r.y) &&
+                   (y <= r.y + r.h)
+      ).map(r => r.name);
   }
 }

@@ -22,7 +22,7 @@ export default class AffineMatrix {
    * Creates a new AffineMatrix
    */
   constructor(a: number | number[] | any = 1, b: number = 0,
-              c: number = 1, d: number = 0, e: number = 0, f: number = 0) {
+              c: number = 0, d: number = 1, e: number = 0, f: number = 0) {
     // Support cloning from another matrix/object or an array
     if (typeof a === 'object') {
       if (a.length !== undefined) {
@@ -123,8 +123,30 @@ export default class AffineMatrix {
    * Converts this matrix to a human-readable string representation
    */
   toString(): string {
-    return `| ${this.a}, ${this.c}, ${this.e} |
-| ${this.b}, ${this.d}, ${this.f} |`;
+    let top = `${this.a}, ${this.c}, ${this.e}`
+    let bottom = `${this.b}, ${this.d}, ${this.f}`;
+
+    let pad = Math.max(top.length, bottom.length) - Math.min(top.length, bottom.length);
+    let padStr = '';
+    for (let i = 0; i < pad; i++) {
+      padStr += ' ';
+    }
+    if (top.length > bottom.length) {
+      bottom += padStr;
+    } else {
+      top += padStr;
+    }
+
+    // Reset padStr for layout
+    padStr = '';
+    for (let i = 0; i < top.length; i++) {
+      padStr += ' ';
+    }
+
+    return `┌ ${padStr} ┐
+│ ${top} │
+│ ${bottom} │
+└ ${padStr} ┘`;
   }
 
   /**

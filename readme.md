@@ -1,4 +1,4 @@
-# Canvas
+# Canviz
 
 A souped-up, animated, dataviz oriented canvas for the browser, React,
 and nodejs.
@@ -14,7 +14,6 @@ WIP.
 #### Coming Soon
 
  * A nifty animation framework
- * A convenient and powerful interaction system
 
 # Installation
 
@@ -73,6 +72,44 @@ function renderer(c) {
 
 // Draws using the specified groups
 ac.render(['extra']);
+```
+
+#### Regions
+
+This is like a lame version of the hopefully-soon-to-be-implemented "Hit Region"
+family of APIs for canvas.
+
+```javascript
+let ac = new AnimatedCanvas(renderer);
+
+function renderer(c) {
+  // You declare a named region like so
+  c.region('a', 0, 0, 100, 100);
+
+  // Regions are aware of the current transform
+  c.translate(50, 50);
+  c.scale(2, 2);
+  c.region('b', 0, 0, 100, 100);
+  // So in screen space, region 'b' is from (50, 50) to (250, 250)
+}
+
+// So once you render...
+ac.render();
+
+// You can then get back the regions you defined, in screen coordinates
+ac.regions.forEach(r => {
+  { name, x, y, w, h } = r;
+});
+
+// And conveniently perform hit tests (say, with a mouse cursor...)
+let regions = ac.intersectingRegions(50, 50); // ['a', 'b']
+
+// This can be used to great effect when combined with the groups
+// functionality to conditionally render components.
+onMouseMoveSomehow((x, y) => {
+  ac.render(ac.intersectingRegions(x, y));
+});
+
 ```
 
 ### Animation
