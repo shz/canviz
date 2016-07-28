@@ -94,7 +94,7 @@ export default class Canvas {
     drawFocusIfNeeded(element: HTMLElement): void;
     clip(): void;
     isPointInPath(x: number, y: number): boolean;
-    fillText(text: string, x: number, y: number, maxWidth: number): void;
+    fillText(text: string, x: number, y: number, maxWidth?: number): void;
     strokeText(text: string, x: number, y: number, maxWidth: number): void;
     measureText(text: string): TextMetrics;
     drawImage(image: CanvasImageSource, offsetX: number, offsetY: number, width?: number, height?: number, canvasOffsetWidth?: number, canvasOffsetHeight?: number, canvasImageWidth?: number, canvasImageHeight?: number): void;

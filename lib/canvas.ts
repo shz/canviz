@@ -255,7 +255,7 @@ export default class Canvas {
   isPointInPath(x: number, y: number): boolean { return this.ctx.isPointInPath(x, y); }
 
   // Text
-  fillText(text: string, x: number, y: number, maxWidth: number) { this.ctx.fillText(text, x, y, maxWidth); }
+  fillText(text: string, x: number, y: number, maxWidth?: number) { this.ctx.fillText(text, x, y, maxWidth); }
   strokeText(text: string, x: number, y: number, maxWidth: number) { this.ctx.strokeText(text, x, y, maxWidth); }
   measureText(text: string): TextMetrics { return this.ctx.measureText(text); }
 

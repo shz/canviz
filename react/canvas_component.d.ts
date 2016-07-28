@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AnimatedCanvas from './animated_canvas';
+import AnimatedCanvas from '../lib/animated_canvas';
 export interface ICanvasComponentProps {
     autoresize: boolean;
     renderer: (c: AnimatedCanvas) => void;
