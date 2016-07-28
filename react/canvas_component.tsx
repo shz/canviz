@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import AnimatedCanvas from './animated_canvas';
+import AnimatedCanvas from '../lib/animated_canvas';
 
 function documentPosition(el: HTMLElement) {
   let x = 0;

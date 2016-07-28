@@ -2,5 +2,8 @@ node_modules/
 .vscode/
 .npm-debug.log
 *.ts
+!*.d.ts
+*.tsx
 typings/
 .gitignore
+script/
