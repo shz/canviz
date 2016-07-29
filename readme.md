@@ -119,6 +119,8 @@ The regions will have been calculated for you as well, and passed through
 to your handler, free of charge!
 
 ```jsx
+import { CanvasComponent } from 'canviz';
+
 function interactHandler(c, regions) {
   // ...
 }
@@ -126,9 +128,5 @@ function interactHandler(c, regions) {
 ```
 
 ### Animation
-
-NYI.  Soon.
-
-### Interaction
 
 NYI.  Soon.

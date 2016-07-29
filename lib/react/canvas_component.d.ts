@@ -1,6 +1,13 @@
 import * as React from 'react';
-import AnimatedCanvas from '../lib/animated_canvas';
+import AnimatedCanvas from '../animated_canvas';
 export interface ICanvasComponentProps {
+    /**
+     * If true, this canvas will be automatically resized based on the
+     * width/height of its containing div.
+     *
+     * This is useful if, for example, CSS is used to control that div's
+     * size.
+     */
     autoresize: boolean;
     renderer: (c: AnimatedCanvas) => void;
     onInteract?: (c: AnimatedCanvas, regions: string[]) => void;

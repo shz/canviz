@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import AnimatedCanvas from '../lib/animated_canvas';
+import AnimatedCanvas from '../animated_canvas';
 
 function documentPosition(el: HTMLElement) {
   let x = 0;
@@ -16,6 +16,13 @@ function documentPosition(el: HTMLElement) {
 }
 
 export interface ICanvasComponentProps {
+  /**
+   * If true, this canvas will be automatically resized based on the
+   * width/height of its containing div.
+   *
+   * This is useful if, for example, CSS is used to control that div's
+   * size.
+   */
   autoresize: boolean;
   renderer: (c: AnimatedCanvas) => void;
   onInteract?: (c: AnimatedCanvas, regions: string[]) => void;
