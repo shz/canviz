@@ -7,14 +7,17 @@ export interface IRegion {
     w: number;
     h: number;
 }
-export declare class RenderChain {
+export interface IRenderChain {
+    draw(f: RenderFunction): void;
+}
+export declare class RenderChain implements IRenderChain {
     group: string;
     canvas: AnimatedCanvas;
     active: boolean;
     constructor(canvas: AnimatedCanvas, group: string, active: boolean);
     draw(f: RenderFunction): void;
 }
-export default class AnimatedCanvas extends Canvas {
+export default class AnimatedCanvas extends Canvas implements IRenderChain {
     renderer: RenderFunction;
     _baseChain: RenderChain;
     /**
@@ -31,6 +34,7 @@ export default class AnimatedCanvas extends Canvas {
      */
     _renderGroups: string[];
     constructor(renderer: RenderFunction, element?: HTMLCanvasElement);
+    draw(f: RenderFunction): void;
     render(groups?: string[]): void;
     group(name: string): RenderChain;
     /**

@@ -11,7 +11,11 @@ export interface IRegion {
   h: number;
 }
 
-export class RenderChain {
+export interface IRenderChain {
+  draw(f: RenderFunction): void;
+}
+
+export class RenderChain implements IRenderChain {
   group: string;
   canvas: AnimatedCanvas;
   active: boolean;
@@ -24,12 +28,14 @@ export class RenderChain {
 
   draw(f: RenderFunction) {
     if (this.active) {
+      this.canvas.save();
       f(this.canvas);
+      this.canvas.restore();
     }
   }
 }
 
-export default class AnimatedCanvas extends Canvas {
+export default class AnimatedCanvas extends Canvas implements IRenderChain {
   renderer: RenderFunction;
   _baseChain: RenderChain = new RenderChain(this, 'default', true);
 
@@ -58,6 +64,14 @@ export default class AnimatedCanvas extends Canvas {
     this.size(100, 100, 1);
   }
 
+  // IRenderChain
+
+  draw(f: RenderFunction) {
+    this._baseChain.draw(f);
+  }
+
+  // AnimatedCanvas methods
+
   render(groups: string[] = []) {
     if (this.rendering) {
       throw new Error('Already rendering, cannot call .render() again');
@@ -66,6 +80,7 @@ export default class AnimatedCanvas extends Canvas {
     this._renderGroups = ['default'].concat(groups);
     this.regions = [];
 
+    this.clear();
     this.renderer(this);
 
     this._renderGroups = [];

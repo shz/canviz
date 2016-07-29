@@ -31,9 +31,10 @@ export default class Canvas {
      */
     _saveCount: number;
     /**
-     * A matrix equivalent to the CanvasRenderingContext2D's transform
-     * matrix, *without* the device pixel ratio scaling.
+     * A matrix stack  equivalent to the CanvasRenderingContext2D's transform
+     * matrix stack, *without* the device pixel ratio scaling.
      */
+    _transformStack: AffineMatrix[];
     _transform: AffineMatrix;
     constructor(element?: HTMLCanvasElement);
     /**

@@ -58,10 +58,16 @@ export default class Canvas {
   _saveCount: number;
 
   /**
-   * A matrix equivalent to the CanvasRenderingContext2D's transform
-   * matrix, *without* the device pixel ratio scaling.
+   * A matrix stack  equivalent to the CanvasRenderingContext2D's transform
+   * matrix stack, *without* the device pixel ratio scaling.
    */
-  _transform: AffineMatrix;
+  _transformStack: AffineMatrix[];
+  get _transform(): AffineMatrix {
+    return this._transformStack[this._transformStack.length - 1];
+  }
+  set _transform(v: AffineMatrix) {
+    this._transformStack[this._transformStack.length - 1] = v;
+  }
 
   constructor(element?: HTMLCanvasElement) {
     if (element === undefined) {
@@ -73,7 +79,7 @@ export default class Canvas {
     this.ctx = element.getContext('2d')!;
     this._saveCount = 0;
     this._ratio = 0;
-    this._transform = new AffineMatrix();
+    this._transformStack = [new AffineMatrix()];
 
     // Rendering hints
     {
@@ -155,7 +161,7 @@ export default class Canvas {
 
     // Reset our transform matrix.  Ignore the device pixel ratio and just
     // use the base scaling.
-    this._transform = new AffineMatrix().scale(this.scaling, this.scaling);
+    this._transformStack = [new AffineMatrix().scale(this.scaling, this.scaling)];
   }
 
   /**
@@ -173,6 +179,7 @@ export default class Canvas {
    */
   save() {
     this._saveCount++;
+    this._transformStack.push(new AffineMatrix(this._transform));
     this.ctx.save();
   }
 
@@ -182,6 +189,7 @@ export default class Canvas {
   restore() {
     if (this._saveCount > 0) {
       this.ctx.restore();
+      this._transformStack.pop();
       this._saveCount--;
     }
   }
