@@ -13,6 +13,9 @@ export class Scale {
   }
 }
 
+/**
+ * Creates a one-dimensional scale
+ */
 export function numeric(data: number[], size: number, round: boolean = true): Scale {
   let s = new Scale();
 
@@ -24,6 +27,43 @@ export function numeric(data: number[], size: number, round: boolean = true): Sc
     if (n > s.max) {
       s.max = n;
     }
+  });
+
+  if (round) {
+    s.stride = Math.round(s.stride);
+  }
+
+  return s;
+}
+
+/**
+ * Creates a two-dimensional numeric plot scale, from mutiple series.
+ * Theses series must contain the same number of elements.
+ */
+export function plot(data: number[][], width: number, height: number, round: boolean = true): Scale {
+  let s = new Scale();
+
+  let length = 0;
+  data.forEach(series => {
+    if (length === 0) {
+      length = series.length;
+    } else {
+      if (series.length != length) {
+        throw new Error('All data series must have the same length');
+      }
+    }
+  });
+
+  s.round = round;
+  s.size = height;
+  s.stride = width / length;
+
+  data.forEach(series => {
+    series.forEach(n => {
+      if (n > s.max) {
+        s.max = n;
+      }
+    });
   });
 
   if (round) {
