@@ -10,7 +10,10 @@ export interface ICanvasComponentProps {
      */
     autoresize: boolean;
     renderer: (c: AnimatedCanvas) => void;
-    onInteract?: (c: AnimatedCanvas, regions: string[]) => void;
+    onInteract?: (c: AnimatedCanvas, regions: string[], mouse: {
+        x: number;
+        y: number;
+    }) => void;
 }
 export default class CanvasComponent extends React.Component<ICanvasComponentProps, void> {
     canvas: AnimatedCanvas;

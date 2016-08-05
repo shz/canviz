@@ -25,7 +25,7 @@ export interface ICanvasComponentProps {
    */
   autoresize: boolean;
   renderer: (c: AnimatedCanvas) => void;
-  onInteract?: (c: AnimatedCanvas, regions: string[]) => void;
+  onInteract?: (c: AnimatedCanvas, regions: string[], mouse: {x: number, y: number}) => void;
 }
 
 export default class CanvasComponent extends React.Component<ICanvasComponentProps, void> {
@@ -57,7 +57,11 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
         // The if is mostly just here to help Typescript, which doesn't
         // know that the props are immutable.
         if (this.props.onInteract) {
-          this.props.onInteract(this.canvas, this.canvas.intersectingRegions(x, y));
+          this.props.onInteract(
+            this.canvas,
+            this.canvas.intersectingRegions(x, y),
+            this._canvasPosition
+          );
         }
       }
       let enter = (e) => {

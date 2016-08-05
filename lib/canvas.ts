@@ -15,8 +15,9 @@ function createCanvas(): HTMLCanvasElement {
   } else {
     // Attempt to use node-canvas
     try {
-      let Canvas = require('canvas').Canvas;
-      return new Canvas();
+      // let Canvas = require('canvas').Canvas;
+      // return new Canvas();
+      throw new Error('Node canvas not supported yet');
     // No node canvas?  No problem! Mock it up.
     } catch (err) {
       return new MockCanvas() as HTMLCanvasElement;
@@ -272,10 +273,17 @@ export default class Canvas {
             width?: number, height?: number,
             canvasOffsetWidth?: number, canvasOffsetHeight?: number,
             canvasImageWidth?: number, canvasImageHeight?: number) {
-    this.ctx.drawImage(image, offsetX, offsetY,
-                       width, height,
-                       canvasOffsetWidth, canvasOffsetHeight,
-                       canvasImageHeight, canvasImageWidth);
+
+    if (arguments.length === 3) {
+      this.ctx.drawImage(image, offsetX, offsetY);
+    } else if (arguments.length == 5) {
+      this.ctx.drawImage(image, offsetX, offsetY, width, height);
+    } else if (arguments.length === 9) {
+      this.ctx.drawImage(image, offsetX, offsetY,
+                         width, height,
+                         canvasOffsetWidth, canvasOffsetHeight,
+                         canvasImageHeight, canvasImageWidth);
+    }
   }
 
   // Pixel manipulation

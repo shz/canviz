@@ -80,11 +80,14 @@ export default class AnimatedCanvas extends Canvas implements IRenderChain {
     this._renderGroups = ['default'].concat(groups);
     this.regions = [];
 
+    let error = null;
     this.clear();
-    this.renderer(this);
-
-    this._renderGroups = [];
-    this.rendering = false;
+    try {
+      this.renderer(this);
+    } finally {
+      this._renderGroups = [];
+      this.rendering = false;
+    }
   }
 
   group(name: string) {
