@@ -37,11 +37,11 @@ export default class Canvas {
   /**
    * Logical width
    */
-  width: number;
+  get width(): number { return this._width; }
   /**
    * Logical height
    */
-  height: number;
+  get height(): number { return this._height; }
   /**
    * Scaling factor
    */
@@ -57,6 +57,16 @@ export default class Canvas {
    * Used in our manual accounting of save/restore calls
    */
   _saveCount: number;
+
+  /**
+   * Base logical width
+   */
+  _width: number;
+
+  /**
+   * Base logical height
+   */
+  _height: number;
 
   /**
    * A matrix stack  equivalent to the CanvasRenderingContext2D's transform
@@ -106,8 +116,8 @@ export default class Canvas {
    * Sets the canvas size and scaling ratio
    */
   size(width: number, height: number, scaling: number = 1) {
-    this.width = width;
-    this.height = height;
+    this._width = width;
+    this._height = height;
     this.scaling = scaling;
 
     // Our Mock and node-canvas implementations might not have a .style

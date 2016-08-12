@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import AnimatedCanvas from '../animated_canvas';
+import { default as AnimatedCanvas, RenderFunction } from '../animated_canvas';
 
 function documentPosition(el: HTMLElement) {
   let x = 0;
@@ -24,14 +24,16 @@ export interface ICanvasComponentProps {
    * size.
    */
   autoresize: boolean;
-  renderer: (c: AnimatedCanvas) => void;
+  renderer: RenderFunction;
   onInteract?: (c: AnimatedCanvas, regions: string[], mouse: {x: number, y: number}) => void;
+  className: string;
 }
 
 export default class CanvasComponent extends React.Component<ICanvasComponentProps, void> {
   canvas: AnimatedCanvas;
   _eventHandlers: (() => void)[] = [];
   _canvasPosition: { x: number, y: number } = { x: 0, y: 0 };
+  _renderCb: (() => void) | undefined = undefined;
 
   constructor(props: ICanvasComponentProps) {
     super(props);
@@ -39,7 +41,7 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
 
   render() {
     return (
-      <div></div>
+      <div className={this.props.className}></div>
     );
   }
 
@@ -60,7 +62,7 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
           this.props.onInteract(
             this.canvas,
             this.canvas.intersectingRegions(x, y),
-            this._canvasPosition
+            {x: x, y: y}
           );
         }
       }
@@ -76,10 +78,10 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
     }
 
     holder.appendChild(this.canvas.el);
-    this.sizeCanvas();
+    this.inferCanvasSize();
   }
 
-  sizeCanvas() {
+  inferCanvasSize() {
     let root = ReactDOM.findDOMNode(this);
     let rect = root.getBoundingClientRect();
 
@@ -87,11 +89,33 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
       Math.floor(rect.width),
       Math.floor(rect.height)
     );
-    this.renderCanvas();
+    this._renderCanvas([]);
   }
 
   renderCanvas(groups: string[] = []) {
+    this._renderCb = () => {
+      this._renderCanvas(groups);
+    }
+    this._queueFrame();
+  }
+
+  _renderCanvas(groups: string[]) {
     this.canvas.render(groups);
+  }
+
+  _queueFrame() {
+    try {
+      window.requestAnimationFrame(this._executeQueuedFrame);
+    } catch (e) {
+      window.setTimeout(this._executeQueuedFrame);
+    }
+  }
+
+  _executeQueuedFrame = () => {
+    if (this._renderCb !== undefined) {
+      this._renderCb();
+      this._renderCb = undefined;
+    }
   }
 
   // React lifecycle
@@ -101,7 +125,7 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
 
     if (this.props.autoresize) {
       let handleResize = () => {
-        this.sizeCanvas();
+        this.inferCanvasSize();
       };
 
       window.addEventListener('resize', handleResize, false);

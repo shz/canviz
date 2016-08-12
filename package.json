@@ -1,6 +1,6 @@
 {
   "name": "canviz",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "A better canvas, angled towards data visualization",
   "main": "./lib/index.js",
   "scripts": {

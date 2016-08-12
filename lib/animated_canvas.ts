@@ -1,7 +1,7 @@
 import Canvas from './canvas';
 
 
-export type RenderFunction = (c: AnimatedCanvas) => void;
+export type RenderFunction = (c: AnimatedCanvas) => void | {width: number, height: number};
 
 export interface IRegion {
   name: string;
@@ -83,14 +83,18 @@ export default class AnimatedCanvas extends Canvas implements IRenderChain {
     let error = null;
     this.clear();
     try {
-      this.renderer(this);
+      let result = this.renderer(this);
+      if (result !== undefined && result.width !== this.width && result.height !== this.height) {
+        this.size(result.width, result.height, this.scaling);
+        this.render(groups);
+      }
     } finally {
       this._renderGroups = [];
       this.rendering = false;
     }
   }
 
-  group(name: string) {
+  group(name: string): IRenderChain {
     if (!this.rendering) {
       throw new Error('This method may only be called while rendering');
     }

@@ -12,11 +12,11 @@ export default class Canvas {
     /**
      * Logical width
      */
-    width: number;
+    readonly width: number;
     /**
      * Logical height
      */
-    height: number;
+    readonly height: number;
     /**
      * Scaling factor
      */
@@ -30,6 +30,14 @@ export default class Canvas {
      * Used in our manual accounting of save/restore calls
      */
     _saveCount: number;
+    /**
+     * Base logical width
+     */
+    _width: number;
+    /**
+     * Base logical height
+     */
+    _height: number;
     /**
      * A matrix stack  equivalent to the CanvasRenderingContext2D's transform
      * matrix stack, *without* the device pixel ratio scaling.

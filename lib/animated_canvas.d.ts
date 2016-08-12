@@ -1,5 +1,8 @@
 import Canvas from './canvas';
-export declare type RenderFunction = (c: AnimatedCanvas) => void;
+export declare type RenderFunction = (c: AnimatedCanvas) => void | {
+    width: number;
+    height: number;
+};
 export interface IRegion {
     name: string;
     x: number;
@@ -36,7 +39,7 @@ export default class AnimatedCanvas extends Canvas implements IRenderChain {
     constructor(renderer: RenderFunction, element?: HTMLCanvasElement);
     draw(f: RenderFunction): void;
     render(groups?: string[]): void;
-    group(name: string): RenderChain;
+    group(name: string): IRenderChain;
     /**
      * Defines a region with a name, position, and size.  The canvas' current
      * transform matrix is applied to these coordinates in order to properly

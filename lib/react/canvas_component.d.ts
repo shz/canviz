@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AnimatedCanvas from '../animated_canvas';
+import { default as AnimatedCanvas, RenderFunction } from '../animated_canvas';
 export interface ICanvasComponentProps {
     /**
      * If true, this canvas will be automatically resized based on the
@@ -9,11 +9,12 @@ export interface ICanvasComponentProps {
      * size.
      */
     autoresize: boolean;
-    renderer: (c: AnimatedCanvas) => void;
+    renderer: RenderFunction;
     onInteract?: (c: AnimatedCanvas, regions: string[], mouse: {
         x: number;
         y: number;
     }) => void;
+    className: string;
 }
 export default class CanvasComponent extends React.Component<ICanvasComponentProps, void> {
     canvas: AnimatedCanvas;
@@ -22,11 +23,15 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
         x: number;
         y: number;
     };
+    _renderCb: (() => void) | undefined;
     constructor(props: ICanvasComponentProps);
     render(): any;
     initCanvas(holder: Element): void;
-    sizeCanvas(): void;
+    inferCanvasSize(): void;
     renderCanvas(groups?: string[]): void;
+    _renderCanvas(groups: string[]): void;
+    _queueFrame(): void;
+    _executeQueuedFrame: () => void;
     componentDidMount(): void;
     componentWillUnmount(): void;
 }
