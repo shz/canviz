@@ -1,7 +1,7 @@
 import Canvas from './canvas';
 
 
-export type RenderFunction = (c: AnimatedCanvas) => void | {width: number, height: number};
+export type RenderFunction = (c: AnimatedCanvas, ...args: any[]) => void | {width: number, height: number};
 
 export interface IRegion {
   name: string;
@@ -12,7 +12,7 @@ export interface IRegion {
 }
 
 export interface IRenderChain {
-  draw(f: RenderFunction): void;
+  draw(f: RenderFunction, ...args: any[]): void;
 }
 
 export class RenderChain implements IRenderChain {
@@ -26,10 +26,10 @@ export class RenderChain implements IRenderChain {
     this.active = active;
   }
 
-  draw(f: RenderFunction) {
+  draw(f: RenderFunction, ...args: any[]) {
     if (this.active) {
       this.canvas.save();
-      f(this.canvas);
+      f(this.canvas, ...args);
       this.canvas.restore();
     }
   }
@@ -66,8 +66,8 @@ export default class AnimatedCanvas extends Canvas implements IRenderChain {
 
   // IRenderChain
 
-  draw(f: RenderFunction) {
-    this._baseChain.draw(f);
+  draw(f: RenderFunction, ...args: any[]) {
+    this._baseChain.draw(f, ...args);
   }
 
   // AnimatedCanvas methods
@@ -84,9 +84,13 @@ export default class AnimatedCanvas extends Canvas implements IRenderChain {
     this.clear();
     try {
       let result = this.renderer(this);
-      if (result !== undefined && result.width !== this.width && result.height !== this.height) {
-        this.size(result.width, result.height, this.scaling);
-        this.render(groups);
+      if (result) {
+        let r = result as {width: number, height: number};
+
+        if (r.width !== this.width && r.height !== this.height) {
+          this.size(r.width, r.height, this.scaling);
+          this.render(groups);
+        }
       }
     } finally {
       this._renderGroups = [];

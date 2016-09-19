@@ -3,14 +3,16 @@ import AffineMatrix from './affine_matrix';
 
 class SectionRenderChain implements IRenderChain {
   section: Section;
+  clip: boolean;
   base: IRenderChain;
 
-  constructor(base: IRenderChain, section: Section) {
+  constructor(base: IRenderChain, section: Section, clip: boolean) {
     this.section = section;
     this.base = base;
+    this.clip = clip;
   }
 
-  draw(f: RenderFunction) {
+  draw(f: RenderFunction, ...args: any[]) {
     this.base.draw((c) => {
       let extendedCanvas = Object.create(c, {
         width: {
@@ -24,7 +26,14 @@ class SectionRenderChain implements IRenderChain {
       });
 
       c.translate(this.section.x, this.section.y);
-      f(extendedCanvas);
+      if (this.clip) {
+        c.beginPath();
+        c.moveTo(0, 0);
+        c.rect(0, 0, this.section.w, this.section.h);
+        c.closePath();
+        c.clip();
+      }
+      f(extendedCanvas, ...args);
     });
   }
 }
@@ -32,7 +41,7 @@ class SectionRenderChain implements IRenderChain {
 export default class Section {
   constructor(public x: number, public y: number, public w: number, public h: number) {}
 
-  apply(target: IRenderChain): IRenderChain {
-    return new SectionRenderChain(target, this);
+  apply(target: IRenderChain, clip: boolean = false): IRenderChain {
+    return new SectionRenderChain(target, this, clip);
   }
 }

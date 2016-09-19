@@ -1,6 +1,7 @@
 export class Scale {
   round: boolean = true;
-  max: number = 0;
+  max: number = -Infinity;
+  min: number = Infinity;
   stride: number = 0;
   size: number = 0;
 
@@ -26,6 +27,9 @@ export function numeric(data: number[], size: number, round: boolean = true): Sc
   data.forEach(n => {
     if (n > s.max) {
       s.max = n;
+    }
+    if (n < s.min) {
+      s.min = n;
     }
   });
 
@@ -62,6 +66,9 @@ export function plot(data: number[][], width: number, height: number, round: boo
     series.forEach(n => {
       if (n > s.max) {
         s.max = n;
+      }
+      if (n < s.min) {
+        s.min = n;
       }
     });
   });
