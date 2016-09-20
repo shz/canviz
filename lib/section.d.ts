@@ -5,5 +5,5 @@ export default class Section {
     w: number;
     h: number;
     constructor(x: number, y: number, w: number, h: number);
-    apply(target: IRenderChain): IRenderChain;
+    apply(target: IRenderChain, clip?: boolean): IRenderChain;
 }

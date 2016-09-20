@@ -1,6 +1,7 @@
 export declare class Scale {
     round: boolean;
     max: number;
+    min: number;
     stride: number;
     size: number;
     calc(n: number): number;

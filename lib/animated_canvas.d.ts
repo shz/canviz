@@ -1,5 +1,5 @@
 import Canvas from './canvas';
-export declare type RenderFunction = (c: AnimatedCanvas) => void | {
+export declare type RenderFunction = (c: AnimatedCanvas, ...args: any[]) => void | {
     width: number;
     height: number;
 };
@@ -11,14 +11,14 @@ export interface IRegion {
     h: number;
 }
 export interface IRenderChain {
-    draw(f: RenderFunction): void;
+    draw(f: RenderFunction, ...args: any[]): void;
 }
 export declare class RenderChain implements IRenderChain {
     group: string;
     canvas: AnimatedCanvas;
     active: boolean;
     constructor(canvas: AnimatedCanvas, group: string, active: boolean);
-    draw(f: RenderFunction): void;
+    draw(f: RenderFunction, ...args: any[]): void;
 }
 export default class AnimatedCanvas extends Canvas implements IRenderChain {
     renderer: RenderFunction;
@@ -37,7 +37,7 @@ export default class AnimatedCanvas extends Canvas implements IRenderChain {
      */
     _renderGroups: string[];
     constructor(renderer: RenderFunction, element?: HTMLCanvasElement);
-    draw(f: RenderFunction): void;
+    draw(f: RenderFunction, ...args: any[]): void;
     render(groups?: string[]): void;
     group(name: string): IRenderChain;
     /**
