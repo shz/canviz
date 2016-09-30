@@ -25,7 +25,7 @@ export interface ICanvasComponentProps {
    */
   autoresize: boolean;
   renderer: RenderFunction;
-  onInteract?: (c: AnimatedCanvas, regions: string[], mouse: {x: number, y: number}) => void;
+  onInteract?: (c: AnimatedCanvas, regions: string[], mouse: {x: number, y: number, action: 'move' | 'down' | 'up' | 'click'}) => void;
   className: string;
 }
 
@@ -52,7 +52,7 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
 
     // If we need interactivity, wire up some event listeners
     if (this.props.onInteract) {
-      let move = (e) => {
+      let mouseEvent = (name) => (e) => {
         let x = e.pageX - this._canvasPosition.x;
         let y = e.pageY - this._canvasPosition.y;
 
@@ -62,19 +62,29 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
           this.props.onInteract(
             this.canvas,
             this.canvas.intersectingRegions(x, y),
-            {x: x, y: y}
+            {x: x, y: y, action: name}
           );
         }
-      }
+      };
       let enter = (e) => {
         this._canvasPosition = documentPosition(this.canvas.el);
       };
+      let move = mouseEvent('move');
+      let click = mouseEvent('click');
+      let down = mouseEvent('down');
+      let up = mouseEvent('up');
 
       this.canvas.el.addEventListener('mousemove', move, false);
       this.canvas.el.addEventListener('mouseenter', enter, false);
+      this.canvas.el.addEventListener('mousedown', down, false);
+      this.canvas.el.addEventListener('mouseup', up, false);
+      this.canvas.el.addEventListener('click', click, false);
 
       this._eventHandlers.push(() => this.canvas.el.removeEventListener('mousemove', move, false));
       this._eventHandlers.push(() => this.canvas.el.removeEventListener('mouseenter', enter, false));
+      this._eventHandlers.push(() => this.canvas.el.removeEventListener('mousedown', down, false));
+      this._eventHandlers.push(() => this.canvas.el.removeEventListener('mouseup', up, false));
+      this._eventHandlers.push(() => this.canvas.el.removeEventListener('click', click, false));
     }
 
     holder.appendChild(this.canvas.el);

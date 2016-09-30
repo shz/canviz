@@ -13,6 +13,7 @@ export interface ICanvasComponentProps {
     onInteract?: (c: AnimatedCanvas, regions: string[], mouse: {
         x: number;
         y: number;
+        action: 'move' | 'down' | 'up' | 'click';
     }) => void;
     className: string;
 }
