@@ -15,7 +15,7 @@ export default class Axis {
   points(formatter?: (number) => string): string[] {
     const max = this.scale.max;
     const min = (this.floor !== undefined) ? this.floor : this.scale.min;
-    const stride = (max - min) / this.n;
+    const stride = (max - min) / (this.n - 1);
 
     if (formatter === undefined) {
       let result: number[] = [];
