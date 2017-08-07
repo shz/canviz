@@ -106,7 +106,8 @@ export default class Canvas {
     fillText(text: string, x: number, y: number, maxWidth?: number): void;
     strokeText(text: string, x: number, y: number, maxWidth: number): void;
     measureText(text: string): TextMetrics;
-    drawImage(image: CanvasImageSource, offsetX: number, offsetY: number, width?: number, height?: number, canvasOffsetWidth?: number, canvasOffsetHeight?: number, canvasImageWidth?: number, canvasImageHeight?: number): void;
+    drawImage(image: CanvasImageSource, offsetX: number, offsetY: number): any;
+    drawImage(image: CanvasImageSource, offsetX: number, offsetY: number, width: number, height: number): any;
     createImageData(imageDataOrSw: number | ImageData, sh?: number): ImageData;
     getImageData(sx: number, sy: number, sw: number, sh: number): ImageData;
     putImageData(imagedata: ImageData, dx: number, dy: number, dirtyX?: number, dirtyY?: number, dirtyWidth?: number, dirtyHeight?: number): void;

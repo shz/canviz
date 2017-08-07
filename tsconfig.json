@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es5",
     "jsx": "react",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "listEmittedFiles": true
   },
   "compileOnSave": true
 }

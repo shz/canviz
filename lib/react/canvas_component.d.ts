@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import * as React from 'react';
 import { default as AnimatedCanvas, RenderFunction } from '../animated_canvas';
 export interface ICanvasComponentProps {
@@ -26,7 +27,7 @@ export default class CanvasComponent extends React.Component<ICanvasComponentPro
     };
     _renderCb: (() => void) | undefined;
     constructor(props: ICanvasComponentProps);
-    render(): any;
+    render(): JSX.Element;
     initCanvas(holder: Element): void;
     inferCanvasSize(): void;
     renderCanvas(groups?: string[]): void;

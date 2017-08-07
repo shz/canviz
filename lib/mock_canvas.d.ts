@@ -9,7 +9,7 @@ export declare class MockCanvasRenderingContext2d implements CanvasRenderingCont
     lineJoin: string;
     lineWidth: number;
     miterLimit: number;
-    msFillRule: string;
+    msFillRule: CanvasFillRule;
     msImageSmoothingEnabled: boolean;
     shadowBlur: number;
     shadowColor: string;
@@ -21,6 +21,7 @@ export declare class MockCanvasRenderingContext2d implements CanvasRenderingCont
     mozImageSmoothingEnabled: boolean;
     webkitImageSmoothingEnabled: boolean;
     oImageSmoothingEnabled: boolean;
+    imageSmoothingEnabled: boolean;
     constructor(canvas: MockCanvas);
     beginPath(): void;
     clearRect(x: number, y: number, w: number, h: number): void;
@@ -58,6 +59,7 @@ export declare class MockCanvasRenderingContext2d implements CanvasRenderingCont
     moveTo(x: number, y: number): void;
     quadraticCurveTo(cpx: number, cpy: number, x: number, y: number): void;
     rect(x: number, y: number, w: number, h: number): void;
+    drawFocusIfNeeded(): void;
 }
 export default class MockCanvas {
     height: number;

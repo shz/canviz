@@ -279,6 +279,9 @@ export default class Canvas {
   measureText(text: string): TextMetrics { return this.ctx.measureText(text); }
 
   // Drawing images
+  drawImage(image: CanvasImageSource, offsetX: number, offsetY: number)
+  drawImage(image: CanvasImageSource, offsetX: number, offsetY: number,
+            width: number, height: number)
   drawImage(image: CanvasImageSource, offsetX: number, offsetY: number,
             width?: number, height?: number,
             canvasOffsetWidth?: number, canvasOffsetHeight?: number,
@@ -287,12 +290,14 @@ export default class Canvas {
     if (arguments.length === 3) {
       this.ctx.drawImage(image, offsetX, offsetY);
     } else if (arguments.length == 5) {
-      this.ctx.drawImage(image, offsetX, offsetY, width, height);
+      this.ctx.drawImage(image, offsetX, offsetY, width as number, height as number);
     } else if (arguments.length === 9) {
       this.ctx.drawImage(image, offsetX, offsetY,
-                         width, height,
-                         canvasOffsetWidth, canvasOffsetHeight,
-                         canvasImageHeight, canvasImageWidth);
+                         width as number, height as number,
+                         canvasOffsetWidth as number,
+                         canvasOffsetHeight as number,
+                         canvasImageHeight as number,
+                         canvasImageWidth as number);
     }
   }
 
