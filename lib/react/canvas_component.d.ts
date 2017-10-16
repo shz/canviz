@@ -18,7 +18,7 @@ export interface ICanvasComponentProps {
     }) => void;
     className: string;
 }
-export default class CanvasComponent extends React.Component<ICanvasComponentProps, void> {
+export default class CanvasComponent extends React.Component<ICanvasComponentProps, never> {
     canvas: AnimatedCanvas;
     _eventHandlers: (() => void)[];
     _canvasPosition: {
